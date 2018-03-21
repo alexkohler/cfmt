@@ -29,12 +29,11 @@ func main() {
 	log.SetFlags(0)
 
 	maxCommentLength := flag.Uint("m", 80, "max comment length")
-	dryRun := flag.Bool("dry", false, "dry run (print the changes that could be made, but don't modify any files)")
-	verbose := flag.Bool("v", false, "print what was changed or ignored")
+	write := flag.Bool("w", false, "write changes to file")
 	flag.Usage = usage
 	flag.Parse()
 
-	if err := wrapComments(flag.Args(), *maxCommentLength, *dryRun, *verbose); err != nil {
+	if err := wrapComments(flag.Args(), *maxCommentLength, *write); err != nil {
 		log.Println(err)
 	}
 }

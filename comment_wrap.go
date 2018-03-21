@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) error {
+func wrapComments(args []string, maxCommentLength uint, write bool) error {
 
 	fset := token.NewFileSet()
 
@@ -22,10 +22,10 @@ func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) er
 	}
 
 	for _, f := range files {
-		processComments(fset, f.Comments, int(maxCommentLength), dryRun, verbose)
+		processComments(fset, f.Comments, int(maxCommentLength), write)
 
 		go func(f *ast.File) {
-			if !dryRun {
+			if write {
 				// Write the changes out to the file
 				fileName := fset.File(f.Pos()).Name()
 
@@ -56,7 +56,7 @@ func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) er
 	return nil
 }
 
-func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxCommentLength int, dryRun, verbose bool) {
+func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxCommentLength int, write bool) {
 
 	for _, cg := range comments {
 		cIdx := 0
@@ -67,11 +67,12 @@ func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxComme
 				file := fset.File(cg.Pos())
 				lineNumber := file.Position(cg.List[cIdx].Pos()).Line
 
-				// Block comments are ignored for now to simplify logic
+				// Block comments are ignored
 				if strings.Contains(c.Text, "/*") || strings.Contains(c.Text, "*/") {
-					if verbose {
+					if !write {
 						log.Printf("%v:%v ignoring block comment\n", file.Name(), lineNumber)
 					}
+
 					break
 				}
 
@@ -135,13 +136,8 @@ func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxComme
 
 				}
 
-				if dryRun || verbose {
-					modalVerb := "was"
-					if dryRun {
-						modalVerb = "can be"
-					}
-
-					log.Printf("%v:%v %v reduced to\n", file.Name(), lineNumber, modalVerb)
+				if !write {
+					log.Printf("%v:%v can be reduced to\n", file.Name(), lineNumber)
 					log.Printf("    %v\n", cg.List[cIdx].Text)
 					log.Printf("    %v\n", cg.List[cIdx+1].Text)
 				}
