@@ -7,8 +7,6 @@ import (
 	"os"
 )
 
-//TODO run gofmt on final product
-
 const (
 	pwd = "./"
 )

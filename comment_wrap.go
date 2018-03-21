@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"go/ast"
 	"go/printer"
 	"go/token"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -22,12 +24,22 @@ func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) er
 	for _, f := range files {
 		processComments(fset, f.Comments, int(maxCommentLength), dryRun, verbose)
 
-		file, err := os.Create(fset.File(f.Pos()).Name())
+		fileName := fset.File(f.Pos()).Name()
+
+		file, err := os.Create(fileName)
 		if err != nil {
 			return err
 		}
 		defer file.Close()
 		if err := printer.Fprint(file, fset, f); err != nil {
+			log.Fatal(err)
+		}
+
+		cmd := exec.Command("gofmt", "-w", fileName)
+		var out bytes.Buffer
+		cmd.Stdout = &out
+		err = cmd.Run()
+		if err != nil {
 			log.Fatal(err)
 		}
 
