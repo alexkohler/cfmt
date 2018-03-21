@@ -12,6 +12,8 @@ import (
 	"strings"
 )
 
+//TODO fix panics
+
 func wrapComments(args []string, maxCommentLength uint, write bool) error {
 
 	fset := token.NewFileSet()
@@ -35,6 +37,10 @@ func wrapComments(args []string, maxCommentLength uint, write bool) error {
 					return
 				}
 				defer file.Close()
+
+				if len(f.Comments) == 0 {
+					return
+				}
 
 				if err := printer.Fprint(file, fset, f); err != nil {
 					log.Fatal(err)
