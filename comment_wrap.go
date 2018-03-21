@@ -22,7 +22,7 @@ func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) er
 	for _, f := range files {
 		processComments(fset, f.Comments, int(maxCommentLength), dryRun, verbose)
 
-		file, err := os.Open(f.Name.Name)
+		file, err := os.Open(fset.File(f.Pos()).Name())
 		if err != nil {
 			return err
 		}
