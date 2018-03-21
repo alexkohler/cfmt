@@ -132,7 +132,7 @@ func Test_processComments(t *testing.T) {
 				t.Fatalf("Did not expect error parsing file, %v", err)
 			}
 
-			processComments(fset, f.Comments, tt.args.maxCommentLength, false, false)
+			processComments(fset, f.Comments, tt.args.maxCommentLength, false)
 
 			if len(tt.wantComments) != len(f.Comments) {
 				t.Fatalf("Expected group length %v, got %v", len(tt.wantComments), len(f.Comments))
