@@ -24,27 +24,32 @@ func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) er
 	for _, f := range files {
 		processComments(fset, f.Comments, int(maxCommentLength), dryRun, verbose)
 
-		if !dryRun {
-			// Write the changes out to the file
-			fileName := fset.File(f.Pos()).Name()
+		go func(f *ast.File) {
+			if !dryRun {
+				// Write the changes out to the file
+				fileName := fset.File(f.Pos()).Name()
 
-			file, err := os.Create(fileName)
-			if err != nil {
-				return err
-			}
-			defer file.Close()
-			if err := printer.Fprint(file, fset, f); err != nil {
-				log.Fatal(err)
-			}
+				file, err := os.Create(fileName)
+				if err != nil {
+					log.Println(err)
+					return
+				}
+				defer file.Close()
 
-			cmd := exec.Command("gofmt", "-w", fileName)
-			var out bytes.Buffer
-			cmd.Stdout = &out
-			err = cmd.Run()
-			if err != nil {
-				log.Fatal(err)
+				if err := printer.Fprint(file, fset, f); err != nil {
+					log.Fatal(err)
+					return
+				}
+
+				cmd := exec.Command("gofmt", "-w", fileName)
+				var out bytes.Buffer
+				cmd.Stdout = &out
+				err = cmd.Run()
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
-		}
+		}(f)
 
 	}
 
