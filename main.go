@@ -17,8 +17,8 @@ func init() {
 
 func usage() {
 	log.Printf("Usage of %s:\n", os.Args[0])
-	log.Printf("\ncmt [flags] # runs on package in current directory\n")
-	log.Printf("\ncmt [flags] [packages]\n")
+	log.Printf("\ncfmt [flags] # runs on package in current directory\n")
+	log.Printf("\ncfmt [flags] [packages]\n")
 	log.Printf("Flags:\n")
 	flag.PrintDefaults()
 }
