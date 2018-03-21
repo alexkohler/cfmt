@@ -29,8 +29,8 @@ func main() {
 	log.SetFlags(0)
 
 	maxCommentLength := flag.Uint("m", 80, "max comment length")
-	dryRun := flag.Bool("dry-run", false, "print what could potentially be changed")
-	verbose := flag.Bool("v", false, "print what was changed")
+	dryRun := flag.Bool("dry", false, "dry run (print the changes that could be made, but don't modify any files)")
+	verbose := flag.Bool("v", false, "print what was changed or ignored")
 	flag.Usage = usage
 	flag.Parse()
 

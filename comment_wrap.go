@@ -24,23 +24,26 @@ func wrapComments(args []string, maxCommentLength uint, dryRun, verbose bool) er
 	for _, f := range files {
 		processComments(fset, f.Comments, int(maxCommentLength), dryRun, verbose)
 
-		fileName := fset.File(f.Pos()).Name()
+		if !dryRun {
+			// Write the changes out to the file
+			fileName := fset.File(f.Pos()).Name()
 
-		file, err := os.Create(fileName)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-		if err := printer.Fprint(file, fset, f); err != nil {
-			log.Fatal(err)
-		}
+			file, err := os.Create(fileName)
+			if err != nil {
+				return err
+			}
+			defer file.Close()
+			if err := printer.Fprint(file, fset, f); err != nil {
+				log.Fatal(err)
+			}
 
-		cmd := exec.Command("gofmt", "-w", fileName)
-		var out bytes.Buffer
-		cmd.Stdout = &out
-		err = cmd.Run()
-		if err != nil {
-			log.Fatal(err)
+			cmd := exec.Command("gofmt", "-w", fileName)
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err = cmd.Run()
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 	}
@@ -128,7 +131,12 @@ func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxComme
 				}
 
 				if dryRun || verbose {
-					log.Printf("%v:%v can be reduced to\n", file.Name(), lineNumber)
+					modalVerb := "was"
+					if dryRun {
+						modalVerb = "can be"
+					}
+
+					log.Printf("%v:%v %v reduced to\n", file.Name(), lineNumber, modalVerb)
 					log.Printf("    %v\n", cg.List[cIdx].Text)
 					log.Printf("    %v\n", cg.List[cIdx+1].Text)
 				}
