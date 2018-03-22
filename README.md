@@ -15,6 +15,7 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
     cfmt [flags] files/directories/packages
 
 ### Flags
+- **-m** - Maximum comment length before cfmt should insert a line break.  (Default 80)
 - **-w** - Writes changes to file. By default, `cfmt` will only print the changes it will make, but will not modify the input files.
 
 ## Examples
