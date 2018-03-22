@@ -31,7 +31,7 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
 // I am a long comment that is over 100 characters long. I should probably wrap
 // to a new line.
 ```
-
+---
 
 **Before**
 ```Go
@@ -44,7 +44,7 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
 // I am a long comment that is over 100 characters long. I should probably wrap
 // below to the rest of the comment.
 ```
-
+---
 
 **Before**
 ```Go
