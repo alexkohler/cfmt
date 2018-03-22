@@ -69,7 +69,7 @@ Pull requests welcome!
 
 ## Other static analysis tools
 
-If you've enjoyed prealloc, take a look at my other static anaylsis tools!
+If you've enjoyed cfmt, take a look at my other static anaylsis tools!
 - [nakedret](https://github.com/alexkohler/nakedret) - Finds naked returns.
 - [unimport](https://github.com/alexkohler/unimport) - Finds unnecessary import aliases.
 - [prealloc](https://github.com/alexkohler/prealloc) - Finds slice declarations that could potentially be preallocated.
