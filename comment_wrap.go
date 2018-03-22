@@ -66,6 +66,11 @@ func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxComme
 
 	for _, cg := range comments {
 		cIdx := 0
+
+		// Ignore huge block comment groups
+		if len(cg.List) > 10 {
+			continue
+		}
 		for _, c := range cg.List {
 
 			if len(c.Text) > maxCommentLength {

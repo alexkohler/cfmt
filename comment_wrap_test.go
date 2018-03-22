@@ -122,6 +122,50 @@ func Test_processComments(t *testing.T) {
 				},
 			},
 		},
+		{name: "large comment group (ignored)",
+			args: args{
+				src: `
+				  package main
+
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  //i am a long comment with no beginning space
+				  func main() {
+				  	println("Hello, World!")
+				  }
+				  `,
+				maxCommentLength: 25,
+			},
+			wantComments: [][]string{
+				{
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+					"//i am a long comment with no beginning space",
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
