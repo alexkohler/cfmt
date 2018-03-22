@@ -57,6 +57,7 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
 //I am a long comment that starts without a space and is over 100 characters
 //long. When I wrap, I should still start without a space
 ```
+---
 
 `cfmt` ignores block (`/* */`) comments and "grouped" comments over a length of 10 (i.e. 10+ consecutive lines starting with `//`).
 
