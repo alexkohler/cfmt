@@ -17,9 +17,9 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
 ### Flags
 - **-w** - Writes changes to file. By default, `cfmt` will only print the changes it will make, but will not modify the input files.
 
-## Example
+## Examples
 
-`cfmt` will wrap to a new line or join an existing line as appropriate. For example, running `cfmt -m=100` on the following file:
+`cfmt` will wrap to a new line or join an existing line as appropriate. See the following before/afters of running `cfmt -m=100`:
 
 **Before**
 ```Go
@@ -58,7 +58,7 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
 //long. When I wrap, I should still start without a space
 ```
 
-`cfmt` ignores block (/* */) comments and "grouped" comments over a length of 10 (i.e. 10+ consecutive lines starting with `//`).
+`cfmt` ignores block (`/* */`) comments and "grouped" comments over a length of 10 (i.e. 10+ consecutive lines starting with `//`).
 
 
 ## Contributing
