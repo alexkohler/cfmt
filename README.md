@@ -4,9 +4,9 @@ cfmt is a tool to wrap Go comments over a certain length to a new line.
 
 ## Installation
 
-    go get -u github.com/alexkohler/cfmt
+`go get -u github.com/alexkohler/cfmt`
 
-    **Note**: cfmt requires gofmt. 
+**Note**: cfmt requires gofmt. 
 
 ## Usage
 
@@ -21,54 +21,44 @@ Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can
 
 `cfmt` will wrap to a new line or join an existing line as appropriate. For example, running `cfmt -m=100` on the following file:
 
+**Before**
 ```Go
-// I am a long comment that is over 80 characters long. I should probably wrap to a new line.
-func test() {
-	// I am a long comment that is over 80 characters long. I should probably wrap below to the
-	// rest of the comment.
-	fmt.Println("hello world")
-
-	// I am a long comment that is over 80 characters long. I should probably wrap below to the
-	// rest of the comment.
-
-	//I am a long comment that starts without a space and is over 80 characters long. When I wrap, I should still start without a space
-
-	/* I am a block comment. I get ignored. I can be waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay longer than 80 characters and still won't be affected.
-	 */
-
-	// Below is a long, single word comment. This should be ignored because it's usually indicative of a diagram, divider, etc...
-	// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-}
-
+// I am a long comment that is over 100 characters long. I should probably wrap to a new line.
 ```
 
-After running `cfmt -w`:
-
+**After**
 ```Go
-// I am a long comment that is over 80 characters long. I should probably wrap
+// I am a long comment that is over 100 characters long. I should probably wrap
 // to a new line.
-func test() {
-	// I am a long comment that is over 80 characters long. I should probably wrap
-	// below to the rest of the comment.
-	fmt.Println("hello world")
+```
+---
 
-	// I am a long comment that is over 80 characters long. I should probably wrap
-	// below to the rest of the comment.
 
-	//I am a long comment that starts without a space and is over 80 characters
-	//long. When I wrap, I should still start without a space
-
-	/* I am a block comment. I get ignored. I can be waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay longer than 80 characters and still won't be affected.
-	 */
-
-	// Below is a long, single word comment. This should be ignored because it's
-	// usually indicative of a diagram, divider, etc...
-	// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-}
-
+**Before**
+```Go
+// I am a long comment that is over 100 characters long. I should probably wrap below to the
+// rest of the comment.
 ```
 
-`cfmt` ignores block comments.
+**After**
+```Go
+// I am a long comment that is over 100 characters long. I should probably wrap
+// below to the rest of the comment.
+```
+
+
+**Before**
+```Go
+//I am a long comment that starts without a space and is over 100 characters long. When I wrap, I should still start without a space
+```
+
+**After**
+```Go
+//I am a long comment that starts without a space and is over 100 characters
+//long. When I wrap, I should still start without a space
+```
+
+`cfmt` ignores block (/* */) comments and "grouped" comments over a length of 10 (i.e. 10+ consecutive lines starting with `//`).
 
 
 ## Contributing
