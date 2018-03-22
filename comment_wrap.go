@@ -10,9 +10,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 )
-
-//TODO fix panics
 
 func wrapComments(args []string, maxCommentLength uint, write bool) error {
 
@@ -23,10 +22,14 @@ func wrapComments(args []string, maxCommentLength uint, write bool) error {
 		return fmt.Errorf("could not parse input %v", err)
 	}
 
+	var wg sync.WaitGroup
 	for _, f := range files {
 		processComments(fset, f.Comments, int(maxCommentLength), write)
 
+		wg.Add(1)
+
 		go func(f *ast.File) {
+			defer wg.Done()
 			if write {
 				// Write the changes out to the file
 				fileName := fset.File(f.Pos()).Name()
@@ -59,6 +62,7 @@ func wrapComments(args []string, maxCommentLength uint, write bool) error {
 
 	}
 
+	wg.Wait()
 	return nil
 }
 
@@ -140,7 +144,7 @@ func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxComme
 								commentStr += " "
 							}
 
-							cg.List = append(cg.List, &ast.Comment{Slash: 0, Text: commentStr + strings.Join(choppedWords, " ")})
+							cg.List = append(cg.List, &ast.Comment{Slash: cg.End() + 1, Text: commentStr + strings.Join(choppedWords, " ") + "\n"})
 							break
 						}
 					}
