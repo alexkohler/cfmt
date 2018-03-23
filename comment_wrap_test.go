@@ -77,7 +77,7 @@ func Test_processComments(t *testing.T) {
 				},
 				{
 					"// i should",
-					"// still be fixed",
+					"// still be fixed\n",
 				},
 			},
 		},
@@ -118,7 +118,7 @@ func Test_processComments(t *testing.T) {
 				{
 					// This comment be ignored (it's a block comment)
 					"//i am a long comment",
-					"//with no beginning space",
+					"//with no beginning space\n",
 				},
 			},
 		},
