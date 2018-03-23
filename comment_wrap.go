@@ -31,6 +31,12 @@ func wrapComments(args []string, maxCommentLength uint, write bool) error {
 		go func(f *ast.File) {
 			defer wg.Done()
 			if write {
+
+				// See if there's anything to actually do
+				if len(f.Comments) == 0 {
+					return
+				}
+
 				// Write the changes out to the file
 				fileName := fset.File(f.Pos()).Name()
 
@@ -40,10 +46,6 @@ func wrapComments(args []string, maxCommentLength uint, write bool) error {
 					return
 				}
 				defer file.Close()
-
-				if len(f.Comments) == 0 {
-					return
-				}
 
 				if err := printer.Fprint(file, fset, f); err != nil {
 					log.Fatal(err)
