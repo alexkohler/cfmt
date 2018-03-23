@@ -10,7 +10,7 @@ cfmt is a tool to wrap Go comments over a certain length to a new line.
 
 ## Usage
 
-Similar to other Go static anaylsis tools (such as golint, go vet), prealloc can be invoked with one or more filenames, directories, or packages named by its import path. cfmt also supports the `...` wildcard. 
+Similar to other Go static anaylsis tools (such as golint, go vet), cfmt can be invoked with one or more filenames, directories, or packages named by its import path. cfmt also supports the `...` wildcard. 
 
     cfmt [flags] files/directories/packages
 
