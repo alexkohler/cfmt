@@ -83,7 +83,7 @@ func processComments(fset *token.FileSet, comments []*ast.CommentGroup, maxComme
 				lineNumber := file.Position(cg.List[cIdx].Pos()).Line
 
 				// Block comments are ignored
-				if strings.Contains(c.Text, "/*") || strings.Contains(c.Text, "*/") {
+				if strings.HasPrefix(c.Text, "/*") || strings.HasSuffix(c.Text, "*/") {
 					if !write {
 						log.Printf("%v:%v ignoring block comment\n", file.Name(), lineNumber)
 					}
